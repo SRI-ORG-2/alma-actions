@@ -1,0 +1,42 @@
+name: Shared Build and SBOM
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        required: true
+        type: string
+    secrets:
+      AQUA_KEY:
+        required: true
+      AQUA_SECRET:
+        required: true
+
+jobs:
+  build_and_sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build \
+            --label org.opencontainers.image.source=${{ github.repository }} \
+            --label org.opencontainers.image.revision=${{ github.sha }} \
+            -t knightfortheright/${{ inputs.app_name }}:${{ github.sha }} ./${{ inputs.app_name }}
+
+      - name: Install Billy
+        run: |
+          export BILLY_SERVER=https://billy.eu-1.codesec.aquasec.com
+          curl -sLo install.sh download.codesec.aquasec.com/billy/install.sh
+          curl -sLo install.sh.checksum https://github.com/argonsecurity/releases/releases/latest/download/install.sh.checksum
+          if ! cat install.sh.checksum | sha256sum ; then
+            echo "install.sh checksum failed"
+            exit 1
+          fi
+          BINDIR="." sh install.sh
+          rm install.sh install.sh.checksum
+
+      - name
+

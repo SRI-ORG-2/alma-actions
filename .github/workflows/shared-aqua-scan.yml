@@ -1,0 +1,29 @@
+name: Shared Aqua Code Scan
+
+on:
+  workflow_call:
+    secrets:
+      AQUA_KEY:
+        required: true
+      AQUA_SECRET:
+        required: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run Aqua Scanner (Trivy)
+        uses: docker://aquasec/aqua-scanner
+        with:
+          args: trivy fs --sast --scanners config,vuln,secret .
+        env:
+          AQUA_KEY: ${{ secrets.AQUA_KEY }}
+          AQUA_SECRET: ${{ secrets.AQUA_SECRET }}
+          GITHUB_TOKEN: ${{ github.token }}
+          AQUA_URL: https://api.eu-1.supply-chain.cloud.aquasec.com
+          CSPM_URL: https://eu-1.api.cloudsploit.com
+          TRIVY_RUN_AS_PLUGIN: 'aqua'
+
