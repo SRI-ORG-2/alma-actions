@@ -38,4 +38,11 @@ jobs:
           BINDIR="." sh install.sh
           rm install.sh install.sh.checksum
 
-      - name
+      - name: Generate SBOM with Billy
+        run: |
+          ./billy generate \
+            --access-token "${{ secrets.GITHUB_TOKEN }}" \
+            --aqua-key "${{ secrets.AQUA_KEY }}" \
+            --aqua-secret "${{ secrets.AQUA_SECRET }}" \
+            --cspm-url https://eu-1.api.cloudsploit.com \
+            --artifact-path knightfortheright/${{ inputs.app_name }}:${{ github.sha }}
