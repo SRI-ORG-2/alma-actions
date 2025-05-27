@@ -39,4 +39,3 @@ jobs:
           rm install.sh install.sh.checksum
 
       - name
-
