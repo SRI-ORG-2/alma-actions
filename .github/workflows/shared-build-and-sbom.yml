@@ -40,7 +40,7 @@ jobs:
 
       - name: Generate SBOM with Billy
         run: |
-          ./billy health
+          ./billy health \
           ./billy generate \
             --access-token "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" \
             --aqua-key "${{ secrets.AQUA_KEY }}" \
