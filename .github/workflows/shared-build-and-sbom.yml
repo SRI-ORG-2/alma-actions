@@ -42,7 +42,7 @@ jobs:
         run: |
           ./billy health \
           ./billy generate \
-            --access-token "${{ secrets.BILLY_PAT }}" \
+            --access-token "${{ secrets.GITHUB_TOKEN }}" \
             --aqua-key "${{ secrets.AQUA_KEY }}" \
             --aqua-secret "${{ secrets.AQUA_SECRET }}" \
             --cspm-url https://eu-1.api.cloudsploit.com \
