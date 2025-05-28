@@ -42,7 +42,8 @@ jobs:
         run: |
           ./billy health \
           ./billy generate \
-            --aqua-key 1QjHtgwBk4ipUmLlPc0da5 \
-            --aqua-secret cyjKeeqLumzZp8fw0UB0u4FRNxNgFUvC2SL \
+            --access-token "${{ secrets.GITHUB_TOKEN }}" \
+            --aqua-key "${{ secrets.AQUA_KEY }}" \
+            --aqua-secret "${{ secrets.AQUA_SECRET }}" \
             --cspm-url https://eu-1.api.cloudsploit.com \
             --artifact-path knightfortheright/${{ inputs.app_name }}:${{ github.sha }}
